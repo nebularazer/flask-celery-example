@@ -22,7 +22,7 @@ docker run -d --name redis -p 6379:6379 redis
 
 ## run celery worker
 ```
-celery -A celery_worker:celery worker --loglevel=INFO
+celery -A celery_worker:celery worker --loglevel=DEBUG
 ```
 
 ## run celery beat for periodic tasks

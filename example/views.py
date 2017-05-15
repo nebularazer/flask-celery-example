@@ -2,14 +2,22 @@ from datetime import datetime, timedelta
 
 from flask import Blueprint, jsonify, url_for
 
+from example import db
+from example.models import Message
 from example.tasks import long_task
 
 home = Blueprint('home', __name__)
 
 
+@home.before_app_first_request
+def init_db():
+    db.create_all()
+
+
 @home.route('/')
 def longtask():
-    eta = datetime.utcnow() + timedelta(minutes=1)
+    """add a new task and start running it after 10 seconds"""
+    eta = datetime.utcnow() + timedelta(seconds=10)
     task = long_task.apply_async(eta=eta)
     return jsonify({
         '_links': {
@@ -45,3 +53,9 @@ def taskstatus(task_id):
             'status': str(task.info),  # this is the exception raised
         }
     return jsonify(response)
+
+
+@home.route('/messages/')
+def messages():
+    messages = Message.query.all()
+    return jsonify([message.text for message in messages])

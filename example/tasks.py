@@ -1,9 +1,13 @@
 import random
 import time
 
-# from celery.signals import task_postrun
+from celery.signals import task_postrun
+from celery.utils.log import get_task_logger
 
-from example import celery
+from example import celery, db
+from example.models import Message
+
+logger = get_task_logger(__name__)
 
 
 @celery.task(bind=True)
@@ -28,10 +32,24 @@ def long_task(self):
 
 
 @celery.task
-def test(arg):
-    print(arg)
+def log(message):
+    """Print some log messages"""
+    logger.debug(message)
+    logger.info(message)
+    logger.warning(message)
+    logger.error(message)
+    logger.critical(message)
 
-'''
+
+@celery.task
+def reverse_messages():
+    """Reverse all messages in DB"""
+    for message in Message.query.all():
+        words = message.text.split()
+        message.text = " ".join(reversed(words))
+        db.session.commit()
+
+
 @task_postrun.connect
 def close_session(*args, **kwargs):
     # Flask SQLAlchemy will automatically create new sessions for you from
@@ -39,4 +57,3 @@ def close_session(*args, **kwargs):
     # context, this ensures tasks have a fresh session (e.g. session errors
     # won't propagate across tasks)
     db.session.remove()
-'''
