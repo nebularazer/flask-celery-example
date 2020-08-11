@@ -1,4 +1,4 @@
-from example import db
+from src.extensions import db
 
 
 class Message(db.Model):

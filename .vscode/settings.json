@@ -1,0 +1,13 @@
+{
+    "python.formatting.provider": "black",
+    "python.linting.flake8Enabled": true,
+    "python.linting.pydocstyleEnabled": true,
+    "python.linting.mypyEnabled": true,
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.rulers": [88, 100],
+        "editor.detectIndentation": false,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4
+    }
+}
