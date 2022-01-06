@@ -8,7 +8,7 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "~3.8"
 flask = "^1.1.2"
-celery = "^4.4.7"
+celery = "^5.2.2"
 redis = "^3.5.3"
 psycopg2-binary = "^2.8.5"
 flask-sqlalchemy = "^2.4.4"
